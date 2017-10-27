@@ -24,6 +24,9 @@ require "dynamic_validation/version"
 #  my_model.add_validators(CustomValidator, { minimum: 4 })
 #
 module DynamicValidation
+  def self.included(klass)
+    klass.validate :dynamic_validations
+  end
   # add_validator is the only public method that is added
   # which allows any instance of a model to add a validator dyanmically.
   #
@@ -52,17 +55,28 @@ module DynamicValidation
   #
   #   record.add_validators(ObjectValidator, OtherValidator)
   def add_validators(*args, &block)
+    @dynamic_validators = {} unless defined? @dynamic_validators
     options = args.extract_options!
     args.each do |validator|
       if !validator.new(options).respond_to?(:validate) || validator.new(options).method(:validate).arity != 1
         raise NotImplementedError, "#{validator} must implement a validate(record) method."
       end
-      singleton_class.validates_with validator, options
+      @dynamic_validators[validator] = options
     end
 
-    singleton_class.validates_with BlockValidator, block: block if block_given?
+    add_validator BlockValidator, block: block if block_given?
   end
   alias add_validator add_validators
+
+  private
+
+  def dynamic_validations
+    if defined? @dynamic_validators
+      @dynamic_validators.each do |validator, options|
+        validates_with validator, options
+      end
+    end
+  end
 
   # BlockValidator is a wrapper validator allow for blocks / lambda to
   # be passed at dynamically at runtime instead of having to pass in an object.
