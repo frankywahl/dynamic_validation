@@ -68,6 +68,12 @@ module DynamicValidation
   end
   alias add_validator add_validators
 
+  # delete_valdiators allows for a previously added validator
+  # to be removed from the list of validations to be ran
+  def delete_validator(validator)
+    @dynamic_validators.delete(validator) if defined? @dynamic_validators
+  end
+
   private
 
   def dynamic_validations

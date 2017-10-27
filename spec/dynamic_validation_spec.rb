@@ -88,6 +88,20 @@ RSpec.describe DynamicValidation do
     end
   end
 
+  describe "#delete_validator" do
+    it "will remove the validator" do
+      expect do
+        klass.add_validators(MyValidator)
+      end.to change { klass.valid? }.from(true).to(false)
+      expect(klass.errors[:name]).to include "SomeError"
+
+      expect do
+        klass.delete_validator(MyValidator)
+      end.to change { klass.valid? }.from(false).to(true)
+      expect(klass.errors[:name]).to be_empty
+    end
+  end
+
   describe "when nothing is added" do
     it "is valid" do
       expect(klass).to be_valid
