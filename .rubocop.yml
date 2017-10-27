@@ -9,3 +9,10 @@ Style/Documentation:
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+
+Style/GuardClause:
+  Enabled: false
+
+Layout/EmptyLineBetweenDefs:
+  Exclude:
+    - lib/dynamic_validation.rb
