@@ -64,7 +64,7 @@ module DynamicValidation
       @dynamic_validators[validator] = options
     end
 
-    add_validator BlockValidator, block: block if block_given?
+    add_validator Class.new(BlockValidator), block: block if block_given?
   end
   alias add_validator add_validators
 

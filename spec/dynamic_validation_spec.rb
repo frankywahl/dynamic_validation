@@ -84,6 +84,11 @@ RSpec.describe DynamicValidation do
           instance.errors.add(:foo, "bar") if instance.number < 12
         end
       end.to change { klass.valid? }.from(true).to(false)
+      expect do
+        klass.add_validator do |instance|
+          instance.errors.add(:foo, "bar") if instance.number < 3
+        end
+      end.not_to change { klass.valid? }
       expect(klass.errors[:foo]).to include "bar"
     end
   end
