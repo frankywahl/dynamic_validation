@@ -13,13 +13,13 @@ RSpec.describe DynamicValidation do
 
   class MyValidator < ActiveModel::Validator
     def validate(record)
-      record.errors[:name] << "SomeError"
+      record.errors.add(:name, "SomeError")
     end
   end
 
   class MyOtherValidator < ActiveModel::Validator
     def validate(record)
-      record.errors[:field] << "SomeOtherError"
+      record.errors.add(:field, "SomeOtherError")
     end
   end
 
