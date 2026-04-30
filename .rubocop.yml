@@ -16,3 +16,11 @@ Style/GuardClause:
 Layout/EmptyLineBetweenDefs:
   Exclude:
     - lib/dynamic_validation.rb
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - spec
+
+Lint/MissingSuper:
+  Exclude:
+    - lib/dynamic_validation.rb

@@ -61,6 +61,7 @@ module DynamicValidation
       if !validator.new(options).respond_to?(:validate) || validator.new(options).method(:validate).arity != 1
         raise NotImplementedError, "#{validator} must implement a validate(record) method."
       end
+
       @dynamic_validators[validator] = options
     end
 
@@ -90,6 +91,7 @@ module DynamicValidation
   # into their own objects just yet.
   class BlockValidator < ActiveModel::Validator
     def initialize(options)
+      super
       @block = options.fetch(:block)
     end
 
